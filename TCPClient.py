@@ -1,7 +1,5 @@
 import sys
 import socket
-from lib import Lib
-
 
 serverAddrPort = ("10.0.0.1",9000)
 BUFSIZE = 1024

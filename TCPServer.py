@@ -1,6 +1,5 @@
 import sys
 import socket
-from lib import Lib
 
 HOST = ""
 PORT = 9000
@@ -44,7 +43,6 @@ def sendFile(fileName, conn,addr):
     TEXTBUF = file.read(BUFSIZE)
     print("Read:",len(TEXTBUF), ".")
     while(TEXTBUF):
-        #Lib.writeTextTCP(TEXTBUF,conn)
         conn.sendto(TEXTBUF.encode(),addr)
         TEXTBUF = file.read(BUFSIZE)
         print("Read:",len(TEXTBUF),".")
