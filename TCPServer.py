@@ -3,7 +3,7 @@ import socket
 from lib import Lib
 
 HOST = ""
-PORT = 9001
+PORT = 9000
 BUFSIZE = 1024
 
 def checkClientInput(x):
@@ -19,7 +19,6 @@ def main(argv):
         s.bind((HOST, PORT))
         print("Server is listening.")
         while True:
-            print("yo")
             data, addr = s.recvfrom(BUFSIZE)
 
             print("connection from: {}".format(addr))
@@ -37,6 +36,7 @@ def main(argv):
 
             else:
                 print("Neither was received")
+                s.sendto(b"Yo, wrong code buddy",addr)
 
 
 def sendFile(fileName, conn,addr):
