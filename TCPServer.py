@@ -4,29 +4,41 @@ from lib import Lib
 
 HOST = ""
 PORT = 9000
-BUFSIZE = 1000
+BUFSIZE = 1024
+
+def checkClientInput(x):
+    return {
+        'l': 1,
+        'L': 1,
+        'u': 2,
+        'U': 2
+    }.get(x, 0)
 
 def main(argv):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
         s.bind((HOST, PORT))
-        s.listen()
+        print("Server is listening.")
         while True:
-            conn, addr = s.accept()
-            while conn:
-                print('Connected by', addr, ".")
                 
-                data = Lib.readTextTCP(conn)
-                filesize = Lib.check_File_Exists(data)
-                if (filesize):
-                    filesizeStr = str(filesize) + "\0"
-                    conn.send(filesizeStr.encode())
-                    sendFile(data,conn)
-                else:
-                    filesizeStr = str(filesize) + "\0"
-                    conn.send(filesizeStr.encode())
-                conn.close()
-                conn = None
-                print("Connection closed")
+            data = s.recvfrom(BUFSIZE)
+            datamsg = data[0]
+            dataaddr = data[1]
+
+            print("connection from: {}".format(dataaddr))
+
+            request = checkClientInput(datamsg)
+
+            if request == 1:
+
+                print("l or L was received")
+                
+            elif request == 2:
+                
+                print("u or U was received")
+
+            else:
+                print("Neither was received")
+
 
 def sendFile(fileName, conn):
     file = open(fileName,"r")

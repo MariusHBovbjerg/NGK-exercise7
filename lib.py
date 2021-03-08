@@ -14,25 +14,25 @@ class Lib(object):
         return size
 
     @staticmethod
-    def readTextTCP(client):
+    def readTextUDP(client):
         text = ""
-        ch = client.recv(1)
+        ch = client.recvfrom(1)
         
         while ch != b'\0':
             text += ch.decode()
-            ch = client.recv(1)
+            ch = client.recvfrom(1)
         
         return text
             
     @staticmethod
-    def writeTextTCP(text,  client):
+    def writeTextUDP(text,  client):
         client.send((text+"\0").encode())
         
     @staticmethod
-    def getFileSizeTCP(client):
+    def getFileSizeUDP(client):
         filesize = 0
         try:
-            filesize = int(Lib.readTextTCP(client))
+            filesize = int(Lib.readTextUDP(client))
         except: 
             filesize = -1
 
